@@ -6,6 +6,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"os"
+	"strings"
 	"sync"
 	"time"
 )
@@ -46,6 +47,9 @@ func (c check) checkHTTP(timeout int) (bool, string) {
 
 	for k, v := range c.Headers {
 		req.Header.Add(k, v)
+		if k == strings.ToLower("host") {
+			req.Host = v
+		}
 	}
 
 	rFunc := func(r *http.Request,
