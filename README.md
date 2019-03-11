@@ -1,32 +1,32 @@
 # ansible_connection_test
-test http/network connectivity from linux hosts using ansible/go
+Test http/network connectivity from local and remote linux hosts using Ansible
 
-# Usage
-```sh
-$ ansible-playbook -i 'localhost,bastion,' -v main.yml
-Using /Users/mschurenko/git/mschurenko/ansible_connection_test/ansible.cfg as config file
+These modules are written in `go` for the purpose of portability. This is nice for hosts that do not have Python installed.
 
-PLAY [localhost] ********************************************************************************************************
+Ansible will push the binaries to remote hosts if you drop them in a `library` directory in your playbook path.
 
-TASK [check_http_osx] ***************************************************************************************************
-ok: [localhost] => changed=false
-  checks:
-    /: |-
-      status code: 301 matches 301
-    /foo: |-
-      status code: 404 matches 404
+# Example
+```yaml
+---
+- hosts: localhost
+  name: runs go binary on macos host
+  tasks:
+    - check_http_osx:
+        checks: &checks
+          - name: google.ca/
+            url: https://google.ca
+            no_follow_redirect: true
+            expected:
+              status_code: 301
 
-PLAY [bastion] **********************************************************************************************************
-
-TASK [check_http] *******************************************************************************************************
-ok: [bastion] => changed=false
-  checks:
-    /: |-
-      status code: 301 matches 301
-    /foo: |-
-      status code: 404 matches 404
-
-PLAY RECAP **************************************************************************************************************
-bastion                    : ok=1    changed=0    unreachable=0    failed=0
-localhost                  : ok=1    changed=0    unreachable=0    failed=0
+- hosts: remote_linux_host
+  name: runs go binary on linux host
+  tasks:
+    - check_http_linux:
+        checks: *check
 ```
+
+```sh
+ansible-playbook test.yml
+```
+

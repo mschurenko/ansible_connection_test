@@ -1,0 +1,18 @@
+{
+  "checks": [
+    {
+      "name": "good",
+      "timeout": 3,
+      "url": "http://google.ca/",
+      "headers": {
+        "Host": "google.ca"
+      },
+      "expected": {
+        "status_code": 200,
+        "headers": {
+          "Server": "gws"
+        }
+      }
+    }
+  ]
+}

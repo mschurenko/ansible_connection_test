@@ -1,0 +1,13 @@
+{
+  "checks": [
+    {
+      "name": "one",
+      "timeout": 3,
+      "host": "google.ca",
+      "port": 80,
+      "expected": {
+        "open": true
+      }
+    }
+  ]
+}

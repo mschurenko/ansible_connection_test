@@ -1,24 +1,22 @@
 ---
 - hosts: localhost
-  gather_facts: false
-  connection: local
   tasks:
   - check_http_osx:
       checks: &checks
-      - name: /
+      - name: slash
         url: https://google.com/
         no_follow_redirect: true
         expected:
           status_code: 301
+          # status_code: 303
       - name: /foo
         url: https://google.com/foo
         no_follow_redirect: true
         expected:
           status_code: 404
 
-- hosts: bastion
-  gather_facts: false
-  connection: ssh
-  tasks:
-  - check_http:
-      checks: *checks
+# - hosts: bastion
+#   connection: ssh
+#   tasks:
+#   - check_http:
+#       checks: *checks
